@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mia Afrianti — Portfolio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0a0f;
+        --surface: #111118;
+        --surface2: #18181f;
+        --accent: #c8a97e;
+        --accent2: #e8c99e;
+        --text: #f0ede8;
+        --muted: #8a8790;
+        --border: rgba(200, 169, 126, 0.15);
+        --glow: rgba(200, 169, 126, 0.08);
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body { font-family: "DM Sans", sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; cursor: none; }
+
+      .cursor { width: 12px; height: 12px; background: var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s ease; mix-blend-mode: difference; }
+      .cursor-ring { width: 36px; height: 36px; border: 1px solid var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: all 0.18s ease; opacity: 0.5; }
+      .cursor-ring.hover { transform: translate(-50%, -50%) scale(2); opacity: 0.15; }
+
+      body::before { content: ""; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.5; }
+
+      nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; padding: 1.5rem 4rem; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(12px); background: rgba(10,10,15,0.7); border-bottom: 1px solid var(--border); transition: all 0.3s ease; }
+      .nav-logo { font-family: "Playfair Display", serif; font-size: 1.4rem; font-weight: 900; color: var(--accent); letter-spacing: 0.05em; text-decoration: none; }
+      .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+      .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.25s; }
+      .nav-links a:hover { color: var(--accent); }
+
+      #hero { min-height: 100vh; display: flex; align-items: center; padding: 8rem 4rem 4rem; position: relative; overflow: hidden; }
+      .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,169,126,0.06) 0%, transparent 70%), radial-gradient(ellipse 50% 50% at 20% 80%, rgba(200,169,126,0.03) 0%, transparent 60%); }
+      .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 60px 60px; opacity: 0.3; }
+      .hero-content { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+      .hero-left { animation: fadeUp 0.9s ease both; }
+      .hero-eyebrow { font-family: "Space Mono", monospace; font-size: 0.72rem; letter-spacing: 0.25em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+      .hero-eyebrow::before { content: ""; width: 2rem; height: 1px; background: var(--accent); display: block; }
+      h1 { font-family: "Playfair Display", serif; font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; line-height: 1.05; color: var(--text); margin-bottom: 1.5rem; }
+      h1 span { color: var(--accent); font-style: italic; }
+      .hero-desc { color: var(--muted); font-size: 1rem; line-height: 1.8; max-width: 440px; margin-bottom: 2.5rem; }
+      .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+      .tag { padding: 0.3rem 0.85rem; border: 1px solid var(--border); border-radius: 100px; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; color: var(--muted); background: var(--surface); transition: all 0.25s; }
+      .tag:hover { border-color: var(--accent); color: var(--accent); }
+      .hero-btns { display: flex; gap: 1rem; }
+      .btn { padding: 0.8rem 1.8rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.25s; cursor: none; }
+      .btn-primary { background: var(--accent); color: #0a0a0f; }
+      .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,169,126,0.25); }
+      .btn-outline { border: 1px solid var(--border); color: var(--text); background: transparent; }
+      .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+      .hero-right { position: relative; display: flex; justify-content: center; animation: fadeUp 0.9s 0.2s ease both; }
+      .photo-frame { position: relative; width: 340px; height: 420px; }
+      .photo-frame::before { content: ""; position: absolute; inset: -2px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), transparent 50%, var(--accent)); z-index: 0; opacity: 0.4; }
+      .photo-main { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; position: relative; z-index: 1; display: block; background: var(--surface2); }
+      .photo-deco { position: absolute; right: -20px; bottom: -20px; width: 80px; height: 80px; border: 2px solid var(--accent); border-radius: 4px; opacity: 0.3; z-index: 0; }
+      .photo-deco2 { position: absolute; left: -15px; top: -15px; width: 50px; height: 50px; background: var(--accent); opacity: 0.06; border-radius: 4px; z-index: 0; }
+      .photo-badge { position: absolute; bottom: -16px; left: -20px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; z-index: 3; backdrop-filter: blur(10px); }
+      .badge-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+      .badge-value { font-family: "Playfair Display", serif; font-size: 1.1rem; color: var(--accent); font-weight: 700; }
+
+      .stats-bar { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2rem 4rem; display: flex; justify-content: center; gap: 6rem; }
+      .stat { text-align: center; }
+      .stat-num { font-family: "Playfair Display", serif; font-size: 2.2rem; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 0.3rem; }
+      .stat-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+      section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+      .section-header { margin-bottom: 4rem; }
+      .section-eyebrow { font-family: "Space Mono", monospace; font-size: 0.7rem; letter-spacing: 0.25em; color: var(--accent); text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem; }
+      .section-eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--border); max-width: 120px; }
+      h2 { font-family: "Playfair Display", serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--text); }
+      h2 em { color: var(--accent); font-style: italic; }
+
+      #about { padding-top: 2rem; }
+      .about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; }
+      .about-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 8px; display: block; background: var(--surface2); }
+      .about-text p { color: var(--muted); font-size: 1rem; line-height: 1.9; margin-bottom: 1.5rem; }
+      .about-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+      .info-key { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.25rem; }
+      .info-val { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+      .info-val a { color: var(--accent); text-decoration: none; }
+      .info-val a:hover { text-decoration: underline; }
+
+      .edu-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; transition: all 0.3s ease; }
+      .edu-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+      .edu-card:hover { transform: translateX(6px); border-color: rgba(200,169,126,0.35); }
+      .edu-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+      .edu-school { font-family: "Playfair Display", serif; font-size: 1.2rem; font-weight: 700; color: var(--text); }
+      .edu-year { font-family: "Space Mono", monospace; font-size: 0.75rem; color: var(--accent); background: rgba(200,169,126,0.08); padding: 0.25rem 0.65rem; border-radius: 4px; white-space: nowrap; }
+      .edu-degree { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+      .edu-gpa { font-size: 0.8rem; color: var(--accent); font-weight: 600; }
+
+      .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+      .skill-cat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.75rem; transition: all 0.3s; }
+      .skill-cat:hover { border-color: rgba(200,169,126,0.3); transform: translateY(-4px); }
+      .skill-cat-title { font-family: "Space Mono", monospace; font-size: 0.72rem; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+      .skill-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+      .skill-chip { padding: 0.3rem 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.75rem; color: var(--muted); background: var(--bg); transition: all 0.2s; }
+      .skill-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+      .projects-grid { display: flex; flex-direction: column; gap: 2rem; margin-top: 4rem; }
+      .project-card { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 8px; padding: 2rem; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); cursor: none; position: relative; overflow: hidden; }
+      .project-card:hover { border-left-color: rgba(200,169,126,0.7); box-shadow: -4px 0 16px rgba(200,169,126,0.1); }
+      .project-meta { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+      .project-role { font-family: "Space Mono", monospace; font-size: 0.68rem; color: var(--accent); background: rgba(200,169,126,0.08); padding: 0.2rem 0.6rem; border-radius: 4px; letter-spacing: 0.08em; }
+      .project-year { font-family: "Space Mono", monospace; font-size: 0.68rem; color: var(--muted); letter-spacing: 0.08em; }
+      .project-gallery { display: flex; gap: 1rem; margin-top: 1.2rem; overflow-x: auto; overflow-y: hidden; padding-bottom: 0.5rem; scroll-behavior: smooth; }
+      .project-gallery::-webkit-scrollbar { height: 4px; }
+      .project-gallery::-webkit-scrollbar-track { background: rgba(200,169,126,0.05); border-radius: 2px; }
+      .project-gallery::-webkit-scrollbar-thumb { background: rgba(200,169,126,0.2); border-radius: 2px; }
+      .project-gallery-item { position: relative; min-width: 180px; height: 120px; background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%); border: 2px solid rgba(200,169,126,0.2); border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.3s; flex-shrink: 0; }
+      .project-gallery-item:hover { border-color: rgba(200,169,126,0.5); box-shadow: 0 8px 20px rgba(200,169,126,0.15); transform: translateY(-3px) scale(1.02); }
+      .project-gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), filter 0.3s; }
+      .project-gallery-item:hover .project-gallery-img { transform: scale(1.08); filter: brightness(1.12) contrast(1.05); }
+      .project-body { display: flex; flex-direction: column; gap: 1rem; position: relative; z-index: 2; }
+      .project-title { font-family: "Playfair Display", serif; font-size: 1.25rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+      .project-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+      .project-bullets { margin: 0; padding-left: 1.2rem; }
+      .project-bullets li { color: var(--muted); font-size: 0.875rem; line-height: 1.7; margin-bottom: 0.3rem; }
+      .project-bullets li::marker { color: var(--accent); }
+
+      .activities-wrap { position: relative; }
+      .activities-line { position: absolute; left: 18px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--accent) 0%, transparent 50%); opacity: 0.6; }
+      .activity-item { display: flex; gap: 2rem; margin-bottom: 2.5rem; position: relative; }
+      .activity-dot { width: 40px; height: 40px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem; z-index: 2; transition: all 0.3s; box-shadow: 0 0 12px rgba(200,169,126,0.2); }
+      .activity-item:hover .activity-dot { background: rgba(200,169,126,0.1); box-shadow: 0 0 20px rgba(200,169,126,0.3); }
+      .activity-card { flex: 1; background: linear-gradient(135deg, var(--surface) 0%, rgba(200,169,126,0.02) 100%); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); }
+      .activity-card:hover { border-color: rgba(200,169,126,0.3); transform: translateX(8px); box-shadow: 0 8px 24px rgba(200,169,126,0.08); }
+      .activity-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+      .activity-title { font-family: "Playfair Display", serif; font-size: 1.05rem; font-weight: 700; color: var(--text); }
+      .activity-year { font-family: "Space Mono", monospace; font-size: 0.7rem; color: var(--accent); font-weight: 600; }
+      .activity-role { font-size: 0.8rem; color: var(--accent); font-weight: 500; margin-bottom: 0.6rem; }
+      .activity-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+      .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 2rem; align-items: stretch; }
+      .gallery-item { position: relative; aspect-ratio: 1/1; min-height: 190px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%); cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease; border: 1px solid var(--border); }
+      .gallery-item:hover { transform: scale(1.02); border-color: rgba(200,169,126,0.4); box-shadow: 0 10px 24px rgba(200,169,126,0.12); }
+      .gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), filter 0.3s; }
+      .gallery-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,15,0.7) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+      .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+      #contact { background: linear-gradient(135deg, var(--surface) 0%, rgba(200,169,126,0.02) 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); max-width: 100%; margin: 0; padding: 6rem 4rem; }
+      .contact-inner { max-width: 1200px; margin: 0 auto; }
+      .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+      .contact-items { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2.5rem; }
+      .contact-item { display: flex; align-items: center; gap: 1.2rem; padding: 1.2rem 1.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; text-decoration: none; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); }
+      .contact-item:hover { border-color: rgba(200,169,126,0.4); background: rgba(200,169,126,0.03); transform: translateX(6px); box-shadow: 0 8px 20px rgba(200,169,126,0.1); }
+      .contact-icon { font-size: 1.4rem; width: 2.5rem; text-align: center; }
+      .contact-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 500; }
+      .contact-val { font-size: 0.95rem; color: var(--text); font-weight: 500; margin-top: 0.3rem; }
+
+      footer { padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); max-width: 1200px; margin: 0 auto; }
+      .footer-text { font-size: 0.8rem; color: var(--muted); }
+      .footer-logo { font-family: "Playfair Display", serif; font-size: 1.2rem; color: var(--accent); font-weight: 700; }
+
+      .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+      .lightbox.active { opacity: 1; pointer-events: all; }
+      .lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 6px; }
+      .lightbox-close { position: absolute; top: 1.5rem; right: 2rem; font-size: 1.8rem; color: var(--muted); cursor: pointer; transition: color 0.2s; font-family: "DM Sans", sans-serif; font-weight: 300; }
+      .lightbox-close:hover { color: var(--text); }
+
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+      .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+      .reveal.visible { opacity: 1; transform: none; }
+
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: var(--bg); }
+      ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+      @media (max-width: 768px) {
+        nav { padding: 1rem 1.5rem; }
+        .nav-links { display: none; }
+        #hero { padding: 6rem 1.5rem 3rem; }
+        .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+        .hero-right { order: -1; }
+        .photo-frame { width: 240px; height: 300px; }
+        section { padding: 4rem 1.5rem; }
+        .stats-bar { padding: 1.5rem; gap: 2rem; }
+        .skills-grid { grid-template-columns: 1fr; }
+        .about-grid, .contact-grid { grid-template-columns: 1fr; }
+        .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        footer { flex-direction: column; gap: 1rem; text-align: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- NAV -->
+    <nav>
+      <a href="#hero" class="nav-logo">MA</a>
+      <ul class="nav-links">
+        <li><a href="#about">Tentang</a></li>
+        <li><a href="#education">Pendidikan</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Proyek</a></li>
+        <li><a href="#activities">Dokumentasi</a></li>
+        <li><a href="#gallery">Galeri</a></li>
+        <li><a href="#contact">Kontak</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="hero-eyebrow">Sistem Informasi · D3 · Polsub</div>
+          <h1>Mia <span>Afrianti</span></h1>
+          <p class="hero-desc">
+            Mahasiswa D3 Sistem Informasi yang berfokus pada manajemen, perancangan, dan administrasi basis data. Berpengalaman dalam Database Lifecycle, ERD, query SQL, dan Perancangan Model UML.
+          </p>
+          <div class="hero-tags">
+            <span class="tag">MySQL · MariaDB · ERD</span>
+            <span class="tag">PHP · HTML · CSS · JS</span>
+            <span class="tag">Power BI · SPSS 25</span>
+            <span class="tag">PowerDesigner · StarUML</span>
+            <span class="tag">ETL · Talend Open Studio</span>
+          </div>
+          <div class="hero-btns">
+            <a href="#projects" class="btn btn-primary">Lihat Proyek</a>
+            <a href="#contact" class="btn btn-outline">Hubungi Saya</a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="photo-frame">
+            <div class="photo-deco2"></div>
+            <img
+              class="photo-main"
+              id="heroPhoto"
+              src="images/Foto mia.png"
+              alt="Mia Afrianti"
+              onerror="this.src='';this.style.background='var(--surface2)';"
+            />
+            <div class="photo-deco"></div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">01 · Tentang Saya</div>
+        <h2>Siapa <em>Aku?</em></h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-img-wrap reveal">
+          <img class="about-img" src="images/Mia.jpeg" alt="Mia Afrianti" onerror="this.style.background='var(--surface2)'" />
+        </div>
+        <div class="about-text reveal">
+          <p>
+            Halo! Saya <strong style="color: var(--text)">Mia Afrianti</strong>, mahasiswa Diploma III Sistem Informasi di Politeknik Negeri Subang. Saya berfokus pada manajemen, perancangan, dan administrasi basis data dengan pemahaman kuat dalam konsep <em>Database Lifecycle</em>, perancangan ERD, penulisan query SQL, serta perancangan model UML.
+          </p>
+          <p>
+            Berpengalaman dalam mengelola serta mengintegrasikan data untuk mendukung fungsionalitas sistem aplikasi. Mampu bekerja secara kolaboratif, teliti dalam menjaga integritas data, serta cepat beradaptasi dengan lingkungan teknologi baru.
+          </p>
+          <p>
+            Selain aktif dalam kegiatan akademik, saya juga terlibat dalam berbagai organisasi kemahasiswaan yang mengasah kemampuan komunikasi, kepemimpinan, dan kolaborasi tim.
+          </p>
+          <div class="about-info-grid">
+            <div class="info-item">
+              <div class="info-key">Lokasi</div>
+              <div class="info-val">Purwakarta, Jawa Barat</div>
+            </div>
+            <div class="info-item">
+              <div class="info-key">Institusi</div>
+              <div class="info-val">Politeknik Negeri Subang</div>
+            </div>
+            <div class="info-item">
+              <div class="info-key">Program Studi</div>
+              <div class="info-val">D3 Sistem Informasi</div>
+            </div>
+            <div class="info-item">
+              <div class="info-key">Email</div>
+              <div class="info-val"><a href="mailto:miaafrianti277@gmail.com">miaafrianti277@gmail.com</a></div>
+            </div>
+            <div class="info-item">
+              <div class="info-key">Telepon</div>
+              <div class="info-val">+62 831-1136-2548</div>
+            </div>
+            <div class="info-item">
+              <div class="info-key">GitHub</div>
+              <div class="info-val"><a href="https://github.com/Mia-af2" target="_blank">github.com/Mia-af2</a></div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-key">Status</div>
+              <div class="info-val" style="color: var(--accent)">Aktif · 2024–Sekarang</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" style="padding-top: 0">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">02 · Pendidikan</div>
+        <h2>Riwayat <em>Pendidikan</em></h2>
+      </div>
+      <div class="reveal">
+        <div class="edu-card">
+          <div class="edu-top">
+            <div class="edu-school">Politeknik Negeri Subang</div>
+            <div class="edu-year">2024 – Sekarang</div>
+          </div>
+          <div class="edu-degree">Diploma III (D3) · Sistem Informasi</div>
+          <div class="edu-gpa">★ IPK: 3.88 / 4.00</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-top">
+            <div class="edu-school">SMAN 1 Wanayasa</div>
+            <div class="edu-year">2021 – 2024</div>
+          </div>
+          <div class="edu-degree">Ilmu Pengetahuan Sosial</div>
+          <div class="edu-gpa">Rata-rata Nilai: 87.17 / 100</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" style="padding-top: 0">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">03 · Keahlian</div>
+        <h2>Skills & <em>Tools</em></h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-cat reveal">
+          <div class="skill-cat-title"><span>🗄️</span> Database & Manajemen Data</div>
+          <div class="skill-chips">
+            <span class="skill-chip">MySQL</span>
+            <span class="skill-chip">MariaDB</span>
+            <span class="skill-chip">phpMyAdmin</span>
+            <span class="skill-chip">Database Design (ERD)</span>
+            <span class="skill-chip">Normalisasi Data (1NF–3NF)</span>
+            <span class="skill-chip">Data Integrity</span>
+          </div>
+        </div>
+        <div class="skill-cat reveal">
+          <div class="skill-cat-title"><span>🎨</span> Perancangan & Analisis</div>
+          <div class="skill-chips">
+            <span class="skill-chip">PowerDesigner</span>
+            <span class="skill-chip">StarUML</span>
+            <span class="skill-chip">Draw.io</span>
+            <span class="skill-chip">Figma</span>
+            <span class="skill-chip">System Requirements Mapping</span>
+          </div>
+        </div>
+        <div class="skill-cat reveal">
+          <div class="skill-cat-title"><span>📊</span> Pengolahan & Integrasi Data</div>
+          <div class="skill-chips">
+            <span class="skill-chip">Power BI</span>
+            <span class="skill-chip">SPSS 25</span>
+            <span class="skill-chip">Microsoft Excel</span>
+            <span class="skill-chip">VBA & Macros</span>
+            <span class="skill-chip">ETL (Talend Open Studio)</span>
+          </div>
+        </div>
+        <div class="skill-cat reveal">
+          <div class="skill-cat-title"><span>💻</span> Teknologi Pendukung</div>
+          <div class="skill-chips">
+            <span class="skill-chip">PHP</span>
+            <span class="skill-chip">HTML</span>
+            <span class="skill-chip">CSS</span>
+            <span class="skill-chip">JavaScript</span>
+            <span class="skill-chip">XAMPP</span>
+            <span class="skill-chip">VS Code</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" style="padding-top: 0">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">04 · Proyek</div>
+        <h2>Proyek <em>Unggulan</em></h2>
+      </div>
+      <div class="projects-grid">
+
+        <div class="project-card reveal">
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="project-role">Data &amp; UI/UX Designer</span>
+              <span class="project-year">2024</span>
+            </div>
+            <div class="project-title">Sistem Transaksi & Laporan Keuangan UMKM Khotimah</div>
+            <p class="project-desc">Sistem pencatatan transaksi dan laporan keuangan otomatis berbasis VBA Excel untuk mempermudah pengelolaan data penjualan UMKM.</p>
+            <ul class="project-bullets">
+              <li>Mengembangkan sistem pencatatan keuangan berbasis VBA Excel dengan fokus pada otomatisasi penyimpanan dan pengolahan data penjualan.</li>
+              <li>Mengelola struktur penyimpanan data spreadsheet agar dapat diakses dengan cepat dan akurat dalam menghasilkan laporan keuangan otomatis.</li>
+            </ul>
+            <div class="project-gallery">
+              <div class="project-gallery-item" onclick="openLightbox('proj1-1')"><img class="project-gallery-img" id="proj1-1" src="images/income.png" alt="Income Report" onerror="this.style.display='none'" /></div>
+              <div class="project-gallery-item" onclick="openLightbox('proj1-2')"><img class="project-gallery-img" id="proj1-2" src="images/login.png" alt="Login System" onerror="this.style.display='none'" /></div>
+              <div class="project-gallery-item" onclick="openLightbox('proj1-3')"><img class="project-gallery-img" id="proj1-3" src="images/datatransaksi.png" alt="Transaction Data" onerror="this.style.display='none'" /></div>
+              <div class="project-gallery-item" onclick="openLightbox('proj1-4')"><img class="project-gallery-img" id="proj1-4" src="images/kasir.png" alt="Cashier System" onerror="this.style.display='none'" /></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="project-role">Database Analyst &amp; Technical Writer</span>
+              <span class="project-year">2025</span>
+            </div>
+            <div class="project-title">E-Commerce Pantera Store Berbasis Website</div>
+            <p class="project-desc">Sistem e-commerce berbasis web untuk fashion retail dengan manajemen produk dan transaksi terintegrasi.</p>
+            <ul class="project-bullets">
+              <li>Merancang skema basis data (logical and physical model) menggunakan PowerDesigner untuk sistem e-commerce fashion retail.</li>
+              <li>Memetakan Entity-Relationship Diagram (ERD) guna memastikan relasi antar tabel (user, produk, order, transaksi) berjalan optimal dan konsisten.</li>
+            </ul>
+            <div class="project-gallery">
+              <div class="project-gallery-item" onclick="openLightbox('proj2-1')"><img class="project-gallery-img" id="proj2-1" src="images/pantera1.jpeg" alt="Product Catalog" onerror="this.style.display='none'" /></div>
+              <div class="project-gallery-item" onclick="openLightbox('proj2-2')"><img class="project-gallery-img" id="proj2-2" src="images/pantera2.jpeg" alt="Shopping Cart" onerror="this.style.display='none'" /></div>
+              <div class="project-gallery-item" onclick="openLightbox('proj2-3')"><img class="project-gallery-img" id="proj2-3" src="images/pantera3.jpeg" alt="Admin Panel" onerror="this.style.display='none'" /></div>
+              <div class="project-gallery-item" onclick="openLightbox('proj2-4')"><img class="project-gallery-img" id="proj2-4" src="images/pantera4.jpeg" alt="Checkout Process" onerror="this.style.display='none'" /></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="project-body">
+            <div class="project-meta">
+              <span class="project-role">Database Analyst &amp; Developer</span>
+              <span class="project-year">2026</span>
+            </div>
+            <div class="project-title">E-TEFA Kompeni — Sistem Informasi Manajemen Produk & Penjualan</div>
+            <p class="project-desc">Sistem informasi berbasis web untuk pengelolaan produk, penjualan, dan forum komunitas pemuda masa kini.</p>
+            <ul class="project-bullets">
+              <li>Merancang dan mengimplementasikan arsitektur basis data relasional menggunakan MySQL untuk mendukung fitur manajemen produk, pengelolaan transaksi, dan forum komunitas.</li>
+            </ul>
+            <div class="project-gallery">
+              <div class="project-gallery-item" onclick="openLightbox('proj3-1')"><img class="project-gallery-img" id="proj3-1" src="images/project1.png" alt="Product Management" onerror="this.style.display='none'" /></div>
+              <div class="project-gallery-item" onclick="openLightbox('proj3-2')"><img class="project-gallery-img" id="proj3-2" src="images/project2.png" alt="Article System" onerror="this.style.display='none'" /></div>
+              <div class="project-gallery-item" onclick="openLightbox('proj3-3')"><img class="project-gallery-img" id="proj3-3" src="images/project3.png" alt="User Dashboard" onerror="this.style.display='none'" /></div>
+              <div class="project-gallery-item" onclick="openLightbox('proj3-4')"><img class="project-gallery-img" id="proj3-4" src="images/project4.png" alt="Community Features" onerror="this.style.display='none'" /></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ACTIVITIES -->
+    <section id="activities" style="padding-top: 0">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">05 · Kegiatan & Organisasi</div>
+        <h2>Perjalanan <em>Organisasi</em></h2>
+      </div>
+      <div class="activities-wrap">
+        <div class="activities-line"></div>
+
+        <div class="activity-item reveal">
+          <div class="activity-dot">🏛️</div>
+          <div class="activity-card">
+            <div class="activity-top">
+              <div class="activity-title">Badan Eksekutif Mahasiswa (BEM)</div>
+              <div class="activity-year">2025–2026</div>
+            </div>
+            <div class="activity-role">Menteri Kementerian Media dan Informasi</div>
+            <div class="activity-desc">Bertanggung jawab dalam pengelolaan media informasi, publikasi, dan dokumentasi seluruh kegiatan organisasi kampus.</div>
+          </div>
+        </div>
+
+        <div class="activity-item reveal">
+          <div class="activity-dot">🎨</div>
+          <div class="activity-card">
+            <div class="activity-top">
+              <div class="activity-title">BEM — Ditjen Digital Visual</div>
+              <div class="activity-year">2024–2025</div>
+            </div>
+            <div class="activity-role">Anggota Ditjen Digital Visual</div>
+            <div class="activity-desc">Membantu pengelolaan konten visual dan publikasi digital untuk mendukung penyampaian informasi kegiatan organisasi.</div>
+          </div>
+        </div>
+
+        <div class="activity-item reveal">
+          <div class="activity-dot">⭐</div>
+          <div class="activity-card">
+            <div class="activity-top">
+              <div class="activity-title">Duta JTIK</div>
+              <div class="activity-year">2025</div>
+            </div>
+            <div class="activity-role">Peserta Program Duta</div>
+            <div class="activity-desc">Mengikuti kegiatan pengembangan komunikasi, kreativitas, dan pengembangan diri mahasiswa di lingkungan kampus.</div>
+          </div>
+        </div>
+
+        <div class="activity-item reveal">
+          <div class="activity-dot">💡</div>
+          <div class="activity-card">
+            <div class="activity-top">
+              <div class="activity-title">Program Kewirausahaan Mahasiswa</div>
+              <div class="activity-year">2025</div>
+            </div>
+            <div class="activity-role">Pengembang Usaha CINITEH</div>
+            <div class="activity-desc">Mengembangkan ide usaha CINITEH (Cireng Isi, Nasi Cokot, dan Teh) yang berfokus pada inovasi produk makanan dan minuman.</div>
+          </div>
+        </div>
+
+        <div class="activity-item reveal">
+          <div class="activity-dot">💰</div>
+          <div class="activity-card">
+            <div class="activity-top">
+              <div class="activity-title">UKM PASMA</div>
+              <div class="activity-year">2024</div>
+            </div>
+            <div class="activity-role">Bendahara</div>
+            <div class="activity-desc">Mengelola administrasi dan pencatatan keuangan organisasi serta mendukung kelancaran kegiatan UKM PASMA.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" style="padding-top: 0">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">06 · Galeri</div>
+        <h2>Momen & <em>Dokumentasi</em></h2>
+      </div>
+      <div class="gallery-grid reveal">
+        <div class="gallery-item" onclick="openLightbox('gal1Img')"><img class="gallery-img" id="gal1Img" src="images/bem1.jpeg" alt="BEM" onerror="this.style.background='var(--surface2)'" /><div class="gallery-overlay"></div></div>
+        <div class="gallery-item" onclick="openLightbox('gal2Img')"><img class="gallery-img" id="gal2Img" src="images/bem2.jpeg" alt="BEM" onerror="this.style.background='var(--surface2)'" /><div class="gallery-overlay"></div></div>
+        <div class="gallery-item" onclick="openLightbox('gal3Img')"><img class="gallery-img" id="gal3Img" src="images/bem3.png" alt="Kegiatan" onerror="this.style.background='var(--surface2)'" /><div class="gallery-overlay"></div></div>
+        <div class="gallery-item" onclick="openLightbox('gal4Img')"><img class="gallery-img" id="gal4Img" src="images/serti2.jpeg" alt="Sertifikat" onerror="this.style.background='var(--surface2)'" /><div class="gallery-overlay"></div></div>
+        <div class="gallery-item" onclick="openLightbox('gal5Img')"><img class="gallery-img" id="gal5Img" src="images/serti1.jpeg" alt="Penghargaan" onerror="this.style.background='var(--surface2)'" /><div class="gallery-overlay"></div></div>
+        <div class="gallery-item" onclick="openLightbox('gal6Img')"><img class="gallery-img" id="gal6Img" src="images/class.png" alt="Perancangan" onerror="this.style.background='var(--surface2)'" /><div class="gallery-overlay"></div></div>
+        <div class="gallery-item" onclick="openLightbox('gal7Img')"><img class="gallery-img" id="gal7Img" src="images/erd.png" alt="Perancangan" onerror="this.style.background='var(--surface2)'" /><div class="gallery-overlay"></div></div>
+        <div class="gallery-item" onclick="openLightbox('gal8Img')"><img class="gallery-img" id="gal8Img" src="images/dfd.png" alt="Perancangan" onerror="this.style.background='var(--surface2)'" /><div class="gallery-overlay"></div></div>
+        <div class="gallery-item" onclick="openLightbox('gal9Img')"><img class="gallery-img" id="gal9Img" src="images/squence.png" alt="Perancangan" onerror="this.style.background='var(--surface2)'" /><div class="gallery-overlay"></div></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="contact-inner">
+        <div class="contact-grid">
+          <div class="reveal">
+            <div class="section-eyebrow">07 · Kontak</div>
+            <h2>Yuk <em>Terhubung!</em></h2>
+            <div class="contact-items">
+              <a href="mailto:miaafrianti277@gmail.com" class="contact-item">
+                <div class="contact-icon">✉️</div>
+                <div><div class="contact-label">Email</div><div class="contact-val">miaafrianti277@gmail.com</div></div>
+              </a>
+              <a href="tel:+6283111362548" class="contact-item">
+                <div class="contact-icon">📱</div>
+                <div><div class="contact-label">Telepon / WhatsApp</div><div class="contact-val">+62 831-1136-2548</div></div>
+              </a>
+              <a href="https://github.com/Mia-af2" target="_blank" class="contact-item">
+                <div class="contact-icon">🐙</div>
+                <div><div class="contact-label">GitHub</div><div class="contact-val">github.com/Mia-af2</div></div>
+              </a>
+              <a href="https://mia-af2.github.io/" target="_blank" class="contact-item">
+        
+                <div class="contact-icon">📍</div>
+                <div><div class="contact-label">Lokasi</div><div class="contact-val">Purwakarta, Jawa Barat, Indonesia</div></div>
+              </a>
+            </div>
+          </div>
+          <div class="reveal">
+            <p style="font-size: 1.3rem; font-family: 'Playfair Display', serif; color: var(--text); line-height: 1.6; margin-bottom: 1.5rem;">
+              Terbuka untuk kolaborasi, diskusi proyek, maupun kesempatan magang & kerja!
+            </p>
+            <p style="color: var(--muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 2rem;">
+              Saya selalu antusias untuk belajar hal baru dan berkontribusi dalam proyek-proyek teknologi yang berdampak positif. Jangan ragu untuk menghubungi saya kapan saja.
+            </p>
+            <div style="padding: 1.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px;">
+              <div style="font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--accent); margin-bottom: 1rem; letter-spacing: 0.15em;">STATUS</div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80; animation: pulse 2s infinite;"></div>
+                <span style="font-size: 0.9rem; color: var(--text)">Tersedia untuk peluang baru</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-text">© 2025 Mia Afrianti · Dibuat dengan ♡</div>
+      <div class="footer-logo">MA</div>
+      <div class="footer-text">D3 Sistem Informasi · Polsub</div>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+      <div class="lightbox-close" onclick="closeLightbox()">×</div>
+      <img id="lightboxImg" src="" alt="" />
+    </div>
+
+    <script>
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("cursorRing");
+      let mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener("mousemove", (e) => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + "px"; cursor.style.top = my + "px"; });
+      function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + "px"; ring.style.top = ry + "px"; requestAnimationFrame(animRing); }
+      animRing();
+      document.querySelectorAll("a, button, .project-card, .gallery-item, .contact-item, .btn, .edu-card, .activity-card").forEach((el) => {
+        el.addEventListener("mouseenter", () => ring.classList.add("hover"));
+        el.addEventListener("mouseleave", () => ring.classList.remove("hover"));
+      });
+
+      function openLightbox(imgId) {
+        const src = document.getElementById(imgId).src;
+        if (!src || src === window.location.href) return;
+        document.getElementById("lightboxImg").src = src;
+        document.getElementById("lightbox").classList.add("active");
+      }
+      function closeLightbox() { document.getElementById("lightbox").classList.remove("active"); }
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
+
+      const reveals = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) { setTimeout(() => { entry.target.classList.add("visible"); }, i * 60); observer.unobserve(entry.target); }
+        });
+      }, { threshold: 0.1 });
+      reveals.forEach((el) => observer.observe(el));
+
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll(".nav-links a");
+      window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach((sec) => { if (window.scrollY >= sec.offsetTop - 120) current = sec.id; });
+        navLinks.forEach((a) => { a.style.color = a.getAttribute("href") === "#" + current ? "var(--accent)" : ""; });
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        const xRatio = (e.clientX / window.innerWidth - 0.5) * 20;
+        const yRatio = (e.clientY / window.innerHeight - 0.5) * 20;
+        document.querySelector(".hero-bg").style.transform = `translate(${xRatio * 0.3}px, ${yRatio * 0.3}px)`;
+      });
+
+      function countUp(el, target, decimals = 0, duration = 1800) {
+        let start = 0;
+        const step = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= target) { start = target; clearInterval(timer); }
+          el.textContent = decimals ? start.toFixed(decimals) : Math.floor(start);
+        }, 16);
+      }
+      const statNums = document.querySelectorAll(".stat-num");
+      const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const text = el.textContent;
+            if (text.includes(".")) countUp(el, parseFloat(text), 2);
+            else if (text.includes("+")) { const num = parseInt(text); countUp(el, num, 0); setTimeout(() => (el.textContent += "+"), 1850); }
+            else countUp(el, parseInt(text));
+            statsObserver.unobserve(el);
+          }
+        });
+      }, { threshold: 0.5 });
+      statNums.forEach((el) => statsObserver.observe(el));
+    </script>
+  </body>
+</html>
